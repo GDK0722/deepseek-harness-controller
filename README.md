@@ -10,6 +10,14 @@ A macOS menu bar controller for [DeepSeek Harness](https://github.com/deepseek-a
 
 > ⚠️ Prerequisite: this is a **companion remote for DSH**. It requires DeepSeek Harness installed (or installable) on your Mac. Without DSH there is nothing to control.
 
+## Why I built this
+
+DSH runs in the browser. Every time you want to use it, you start the process, then open a tab and type the address. Not a lot of steps, but do it every day and it gets old.
+
+So I wrote this thing. Click the fish in the menu bar and the process comes up. Click again and a panel shows you what's going on: whether the service is alive, how much balance is left, how many tokens you burned, how much of it went to flash vs pro. No browser tab needed.
+
+Fair warning: I'm not a professional developer, just a casual user. DSH reminds me of Jupyter Notebook back in the day — fun to play with, but there's always some fiddling before you can start. This tool skips the fiddling for me. Useful to me, maybe not to you, and that's fine 🙂
+
 ## Features
 
 - 🐟 Menu bar icon with status dot and remaining balance at a glance
