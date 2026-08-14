@@ -1,0 +1,14 @@
+# 构建产物（由 install.sh 生成）
+.venv/
+DSH Controller.app/
+
+# Python
+__pycache__/
+*.pyc
+
+# macOS
+.DS_Store
+
+# 本地备份与调试
+backup-*/
+vendor/

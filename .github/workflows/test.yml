@@ -1,0 +1,43 @@
+# 云端干净 Mac 安装测试：每次推送都在全新的 macOS 环境跑一遍 install.sh，
+# 验证"别人 clone 下来能不能装上"。
+name: install-test
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  macos-install:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 安装官方 DeepSeek Harness（npm 全局）
+        run: npm install -g @deepseek-ai/dsh
+
+      - name: 运行 install.sh（CI 环境不注册 launchd）
+        run: ./install.sh --yes --no-bootstrap
+
+      - name: 验证构建产物
+        run: |
+          set -e
+          test -x "DSH Controller.app/Contents/MacOS/launcher"
+          test -f "DSH Controller.app/Contents/Resources/dsh_controller.py"
+          test -f "DSH Controller.app/Contents/Resources/usage_stats.py"
+          test -f "DSH Controller.app/Contents/Resources/pricing.json"
+          test -f "DSH Controller.app/Contents/Resources/AppIcon.icns"
+          test -f "$HOME/Library/LaunchAgents/com.deepseek.harness.web.plist"
+          echo "--- 生成的服务 plist ---"
+          cat "$HOME/Library/LaunchAgents/com.deepseek.harness.web.plist"
+
+      - name: 验证 Python 环境与代码
+        run: |
+          set -e
+          .venv/bin/python3 -c "import objc, AppKit, Foundation; print('pyobjc ok')"
+          .venv/bin/python3 -m py_compile src/dsh_controller.py src/usage_stats.py
+          .venv/bin/python3 -c "
+          import sys; sys.path.insert(0, 'src')
+          import usage_stats
+          assert usage_stats.PRICE_FLAT, '价格表为空'
+          assert usage_stats.ZSTD, 'zstd 未找到'
+          print('usage_stats ok, zstd =', usage_stats.ZSTD)"
