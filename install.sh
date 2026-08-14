@@ -296,4 +296,7 @@ echo "🎉 安装完成！"
 info "1. 双击打开: $APP_DIR"
 info "2. 菜单栏出现小鱼图标，点击即可控制服务 / 查看用量"
 info "3. 卸载：运行本仓库的 ./uninstall.sh"
-[ "$DRY_RUN" = 1 ] && info "（以上为 dry-run 预览，未实际写入任何内容）"
+if [ "$DRY_RUN" = 1 ]; then
+    info "（以上为 dry-run 预览，未实际写入任何内容）"
+fi
+exit 0
